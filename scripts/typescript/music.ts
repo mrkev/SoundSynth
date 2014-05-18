@@ -148,6 +148,7 @@ class Note {
      * @param {number} Raw MIDI value, where 0 is C from the lowest MIDI octave.
      */
     constructor (raw_val : number) {
+        P.roclaim(!isNaN(raw_val), raw_val + " is not a number.");
         this.raw_val = raw_val;
     }
 

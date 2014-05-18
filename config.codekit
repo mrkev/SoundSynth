@@ -50,6 +50,16 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/scripts\/js\/vendor\/jquery-1.11.1.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/scripts\/js\/vendor\/jquery-1.11.1.min.js",
+		"outputAbbreviatedPath": "\/scripts\/js\/vendor\/min\/jquery-1.11.1.min-ck.js",
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/scripts\/js\/vendor\/modernizr-2.6.2.min.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -172,22 +182,6 @@
 		"noImplicitAny": 0,
 		"noResolve": 0,
 		"outputAbbreviatedPath": "\/scripts\/js\/view.js",
-		"outputPathIsSetByUser": 0,
-		"removeComments": 0,
-		"targetECMAVersion": 0
-		},
-	"\/scripts\/typescript\/wavetouch.ts": {
-		"createDeclarationFile": 0,
-		"createSourceMap": 0,
-		"fileType": 128,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/scripts\/typescript\/wavetouch.ts",
-		"minifyOutput": 0,
-		"moduleType": 0,
-		"noImplicitAny": 0,
-		"noResolve": 0,
-		"outputAbbreviatedPath": "\/scripts\/js\/wavetouch.js",
 		"outputPathIsSetByUser": 0,
 		"removeComments": 0,
 		"targetECMAVersion": 0

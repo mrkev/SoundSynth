@@ -13,12 +13,12 @@ class Beat {
 	}
 
 	public play () : void {
-		P.rintf ("will play", "Beat.lifecycle");
+		P.rint ("will play", "Beat.lifecycle");
 		this.timer = setTimeout(this.tick, this.delay);
 	}
 
 	private tick () : void {
-		P.rintf ('tick' + this.tick + " " + this.delay, "Beat.lifecycle");
+		P.rint ('tick' + this.tick + " " + this.delay, "Beat.lifecycle");
 		this.timer = setTimeout(this.tick, this.delay);
 		//var l = this._counters.length; // Evaluate length only once for max perf.
 		//var i = l;
@@ -35,11 +35,11 @@ class Beat {
 
 }
 
-
+/*
 var b = new Beat(128);
 
 b.callbacks[2] = function () {
 	console.log("note");
 }
 
-b.play();
+b.play();*/

@@ -25,11 +25,11 @@ class View {
 		this._note = root.find('.note');
 		this._dlog = root.find('#log');
 		this._debug = false;
+		this._note.html("<b>Hello world!</b>");
+		var nodes = document.getElementsByClassName("note");
 
-		P.rint (this._note);
-		console.log("a" + this._note);
-		console.dir(this._note);
-		//P.rintf ( "Initializing View. Will display notes at: " + this._note.html.toString(), "View.lifecycle");
+		P.rint("Created view with note element"	, "View.lifecycle");
+		P.rint(this._note 					    , "View.lifecycle");
 	}
 
 	public notePlayed (note : Note) {

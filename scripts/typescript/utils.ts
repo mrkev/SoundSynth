@@ -2,26 +2,38 @@ class P {
 	public static rototyping = true;
 	public static ermitted = [];
 
-	public static rint (obj : any) : void {
+	public static rint (obj : any, tag? : string) : void {
+		if (tag && this.ermitted.indexOf(tag) == -1) return;
 		if (P.rototyping) console.log(obj);
 	}
 
 	public static rintf (obj:any, tag:string) :void {
 		if (this.ermitted.indexOf(tag) != -1) console.log(obj);
 	}
+
+	public static roclaim (condition : boolean, message? : string) {
+		if (!condition) {
+		    throw message || "Assertion failed.";
+		}
+	}
 }
 
 class Broadcaster {
-	private receptors : Receptor[];
-	public registerReceptor (receptor : Receptor) : void {
-		this.receptors.push(receptor);
-	}
-	public removeReceptor (receptor : Receptor) : void {
-        this.receptors.splice(this.receptors.indexOf(receptor), 1);
+	private observers : Observer[];
+
+	constructor () {
+		this.observers = [];
 	}
 
-	notifyReceptors (arg : any) {
-		this.receptors.forEach(
+	public registerObserver (observer : Observer) : void {
+		this.observers.push(observer);
+	}
+	public removeObserver (observer : Observer) : void {
+        this.observers.splice(this.observers.indexOf(observer), 1);
+	}
+
+	notifyObservers (arg : any) {
+		this.observers.forEach(
 			function(element, index, array){
 				element.update (arg);
 			}
@@ -29,7 +41,7 @@ class Broadcaster {
 	}
 }
 
-interface Receptor {
+interface Observer {
     update (arg:any);
 }
 

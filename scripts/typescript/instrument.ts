@@ -1,6 +1,50 @@
 ///<reference path="lib/webaudio.d.ts"/>
 ///<reference path="music.ts"/>
 
+class WebAudioFactory {
+	private static sts = -1; // -1 : undef, 0 : not supported, 1 : standard, 2 : webkit
+	private static ctx;
+
+	public static check() {
+		if (typeof AudioContext !== 'undefined') {
+			this.sts = 1;
+		} else if (typeof webkitAudioContext !== 'undefined') {
+			this.sts = 2;
+		} else {
+			this.sts = 0
+		} 
+
+		// Thanks to https://hacks.mozilla.org/2013/02/simplifying-audio-in-the-browser/ 
+		// for the base of this freature detection code.
+
+	}
+
+	public static audioContext() {
+		if (this.sts == -1) WebAudioFactory.check();
+		if (this.sts ==  1) return new AudioContext();
+		if (this.sts ==  2) return new webkitAudioContext();
+		if (this.sts ==  0) {
+			console.log("Web Audio is not supported by this browser, it seems.");
+			return null;
+		}
+	}
+
+	public static contextSingleton() {
+		if (this.sts == -1) this.ctx = this.audioContext();
+		return this.ctx;
+	}
+
+	public static gainNode(context) {
+		if (this.sts == -1) WebAudioFactory.check();
+		if (this.sts ==  1) return context.createGain();
+		if (this.sts ==  2) return context.createGainNode();
+		if (this.sts ==  0) {
+			console.log("Web Audio is not supported by this browser, it seems.");
+			return null;
+		}
+	}
+}
+
 class Instrument {
 	private context;
 	private gain;
@@ -14,7 +58,7 @@ class Instrument {
 	}
 
 	constructor (public num_osc : number) {
-		this.context = new AudioContext() || new webkitAudioContext();
+		this.context = WebAudioFactory.contextSingleton();
 
 		var lowpass_filter  = this.context.createBiquadFilter();
 		var wave_shaper     = this.context.createWaveShaper();
@@ -22,9 +66,9 @@ class Instrument {
 		var compressor      = this.context.createDynamicsCompressor();
 		var reverb          = this.context.createConvolver();
 
-		var master_dry      = this.context.createGain();
-		var master_wet      = this.context.createGain();
-		this.gain       	= this.context.createGain();
+		var master_dry      = WebAudioFactory.gainNode(this.context);
+		var master_wet      = WebAudioFactory.gainNode(this.context);
+		this.gain       	= WebAudioFactory.gainNode(this.context);
 
 		for (var i = num_osc; i > 0; i--) {
 			var osc = this.context.createOscillator();
@@ -52,7 +96,7 @@ class Instrument {
 
 		//this.gain.gain.setValueAtTime(0, this.context.currentTime);
 
-		console.log('starting');
+		P.rint('Starting instrument', "Instrument.lifecycle");
 	}
 
 	playFreq(frequency : number) {
