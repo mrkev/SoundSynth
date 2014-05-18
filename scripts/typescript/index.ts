@@ -42,6 +42,10 @@ class Controller implements Observer {
 		// Change (NoteChange, FreqChange) enum or a constant string.
 		if (arg instanceof Note) {
 			this.view.notePlayed(arg);
+
+			// var status : string = 'Consider next: ';
+			// this.model.lastHarmony.forEach(function(e) {status = status + e.letter()});
+			// this.view.setStatus(status)
 			return;
 		}
 
@@ -83,6 +87,9 @@ class Controller implements Observer {
 
 		// Register Keydown.
 		$(document).keydown(function(event){
+			if (event.keyCode == 17) self.model.selectedOctave -= 1;
+			if (event.keyCode == 18) self.model.selectedOctave += 1;
+
 
 			// Return if it's not a key we care for.
 			if (!(event.keyCode in Controller.keyBindings)) { return; };
@@ -121,7 +128,6 @@ class Controller implements Observer {
 			var n : Note = new Note(
 				self.harmony[Math.floor(self.sstate.beta/13)]
 				+ (self.model.selectedOctave * Note.N_PER_8VE));
-			self.view.lg(n.toString());
 
 			self.model.playNote(n);
 		}, false);
@@ -130,9 +136,6 @@ class Controller implements Observer {
 		document.addEventListener('touchend', function(e:TouchEvent) {
 		    e.preventDefault();
 		    var touch = e.touches[0];
-
-		    self.view.lg("touchend");
-
 		    //alert(touch.pageX + " - " + touch.pageY);
 			//gain.gain.value = 0;
 			//osc1.frequency.value = freq_from_note(keyBindings[97]);
@@ -151,9 +154,13 @@ class Controller implements Observer {
 		  self.sstate.beta     = e.beta;
 		  self.sstate.gamma    = e.gamma;
 
+
+
 		  //dlog(harmony[Math.floor(e.beta/13)] + " - " + e.beta);
 		  		  
-		  //self.view.lg("" + self.sstate.gamma);
+		  self.view.notePlayed(new Note(
+				self.harmony[Math.floor(self.sstate.beta/13)]
+				+ (self.model.selectedOctave * Note.N_PER_8VE)));
 		}, true);
 		
 	}
@@ -173,6 +180,7 @@ class Model extends Broadcaster{
 	public prevNote : Note;
 	public instr 	: Instrument;
 	public harmonizer : Harmonizer;
+	public lastHarmony : Note[];
 
 	public timer;
 	public delay : number;
@@ -202,6 +210,7 @@ class Model extends Broadcaster{
 	public playNote(note : Note) :void {
 		this.instr.playNote(note);
 		this.prevNote = note;
+		// this.lastHarmony = this.harmonizer.harmonize(note);
 		this.notifyObservers(note);
 	}
 

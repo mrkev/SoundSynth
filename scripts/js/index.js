@@ -435,23 +435,24 @@ var VCA = (function () {
 var View = (function () {
     function View(root) {
         this.noteColor = {
-            'B': "#FF0",
-            'A#': "#FF0",
-            'A': "#FF0",
-            'G#': "#FF0",
-            'G': "#FF0",
-            'F#': "#FF0",
-            'F': "#FF0",
-            'E': "#FF0",
-            'D#': "#FF0",
-            'D': "#FF0",
-            'C#': "#FF0",
-            'C': "#FF0"
+            'B': "#e8e8e8",
+            'A#': "#e8e8e8",
+            'A': "#e8e8e8",
+            'G#': "#e8e8e8",
+            'G': "#e8e8e8",
+            'F#': "#e8e8e8",
+            'F': "#e8e8e8",
+            'E': "#e8e8e8",
+            'D#': "#e8e8e8",
+            'D': "#e8e8e8",
+            'C#': "#e8e8e8",
+            'C': "#e8e8e8"
         };
         this._note = root.find('.note');
         this._dlog = root.find('#log');
+        this._status = root.find('#status');
         this._debug = false;
-        this._note.html("<b>Hello world!</b>");
+        this._note.html("##");
         var nodes = document.getElementsByClassName("note");
 
         P.rint("Created view with note element", "View.lifecycle");
@@ -459,6 +460,7 @@ var View = (function () {
     }
     View.prototype.notePlayed = function (note) {
         this._note.html(note.letter());
+        this.lg(note.toString());
         this._note.css("background-color", this.noteColor[note.letter()]);
     };
 
@@ -478,6 +480,10 @@ var View = (function () {
     View.prototype.lg = function (message) {
         this._dlog.prepend("<p>" + message + "</p>");
         // TODO: remove last log if > 50;
+    };
+
+    View.prototype.setStatus = function (message) {
+        this._status.html(message);
     };
     return View;
 })();
@@ -556,6 +562,10 @@ var Controller = (function () {
         // Change (NoteChange, FreqChange) enum or a constant string.
         if (arg instanceof Note) {
             this.view.notePlayed(arg);
+
+            // var status : string = 'Consider next: ';
+            // this.model.lastHarmony.forEach(function(e) {status = status + e.letter()});
+            // this.view.setStatus(status)
             return;
         }
     };
@@ -573,6 +583,11 @@ var Controller = (function () {
 
         // Register Keydown.
         $(document).keydown(function (event) {
+            if (event.keyCode == 17)
+                self.model.selectedOctave -= 1;
+            if (event.keyCode == 18)
+                self.model.selectedOctave += 1;
+
             // Return if it's not a key we care for.
             if (!(event.keyCode in Controller.keyBindings)) {
                 return;
@@ -603,7 +618,6 @@ var Controller = (function () {
         // Register touchstart.
         document.addEventListener('touchstart', function (e) {
             var n = new Note(self.harmony[Math.floor(self.sstate.beta / 13)] + (self.model.selectedOctave * Note.N_PER_8VE));
-            self.view.lg(n.toString());
 
             self.model.playNote(n);
         }, false);
@@ -612,8 +626,6 @@ var Controller = (function () {
         document.addEventListener('touchend', function (e) {
             e.preventDefault();
             var touch = e.touches[0];
-
-            self.view.lg("touchend");
             //alert(touch.pageX + " - " + touch.pageY);
             //gain.gain.value = 0;
             //osc1.frequency.value = freq_from_note(keyBindings[97]);
@@ -628,8 +640,9 @@ var Controller = (function () {
             self.sstate.alpha = e.alpha;
             self.sstate.beta = e.beta;
             self.sstate.gamma = e.gamma;
+
             //dlog(harmony[Math.floor(e.beta/13)] + " - " + e.beta);
-            //self.view.lg("" + self.sstate.gamma);
+            self.view.notePlayed(new Note(self.harmony[Math.floor(self.sstate.beta / 13)] + (self.model.selectedOctave * Note.N_PER_8VE)));
         }, true);
     };
     Controller.keyBindings = {
@@ -684,6 +697,8 @@ var Model = (function (_super) {
     Model.prototype.playNote = function (note) {
         this.instr.playNote(note);
         this.prevNote = note;
+
+        // this.lastHarmony = this.harmonizer.harmonize(note);
         this.notifyObservers(note);
     };
 

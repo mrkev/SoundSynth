@@ -4,28 +4,30 @@
 
 class View {
 	noteColor = {
-		'B'  : "#FF0",
-		'A#' : "#FF0",
-		'A'  : "#FF0",
-		'G#' : "#FF0",
-		'G'  : "#FF0",
-		'F#' : "#FF0",
-		'F'  : "#FF0",
-		'E'  : "#FF0",
-		'D#' : "#FF0",
-		'D'  : "#FF0",
-		'C#' : "#FF0",
-		'C'  : "#FF0"
+		'B'  : "#e8e8e8",
+		'A#' : "#e8e8e8",
+		'A'  : "#e8e8e8",
+		'G#' : "#e8e8e8",
+		'G'  : "#e8e8e8",
+		'F#' : "#e8e8e8",
+		'F'  : "#e8e8e8",
+		'E'  : "#e8e8e8",
+		'D#' : "#e8e8e8",
+		'D'  : "#e8e8e8",
+		'C#' : "#e8e8e8",
+		'C'  : "#e8e8e8"
 	}
 	_note : JQuery;
 	_dlog : JQuery;
+	_status : JQuery;
 	_debug : boolean;
 
 	constructor (root : JQuery) {
 		this._note = root.find('.note');
 		this._dlog = root.find('#log');
+		this._status = root.find('#status');
 		this._debug = false;
-		this._note.html("<b>Hello world!</b>");
+		this._note.html("##");
 		var nodes = document.getElementsByClassName("note");
 
 		P.rint("Created view with note element"	, "View.lifecycle");
@@ -34,6 +36,7 @@ class View {
 
 	public notePlayed (note : Note) {
 		this._note.html(note.letter());
+		this.lg(note.toString());
 		this._note.css("background-color", this.noteColor[note.letter()]);
 	}
 
@@ -52,5 +55,9 @@ class View {
 	public lg(message : String) {
 		this._dlog.prepend("<p>" + message + "</p>");
 		// TODO: remove last log if > 50;
+	}
+
+	public setStatus(message : string) {
+		this._status.html(message);
 	}
 }

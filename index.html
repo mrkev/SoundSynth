@@ -1,14 +1,37 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Song of Life</title>
+	<title>Sound Thingy</title>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/css/vendor/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/css/vendor/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/css/index.css">
+
 </head>
 <body>
 	<div id="View">
+		<div id="oscilloscope"></div>
 		<div class="note">F#</div>
-		<div id="log">LOG</div>
+		<div id="status">Hi</div>
+		<div id="log">Log.</div>
 	</div>
 	<script src="scripts/js/index.js"></script>
+	<script type="text/javascript" src="scripts/js/vendor/flowtype.js"></script>
+	<script type="text/javascript" src="scripts/js/vendor/wavy-jones.js"></script>
+	<script type="text/javascript">
+	$('body').flowtype({
+	   minimum : 500,
+	   maximum : 1200
+	});
+
+	var context = WebAudioFactory.contextSingleton();
+	myOscilloscope = new WavyJones(context, 'oscilloscope');
+	myOscilloscope.lineColor = '#EE0000';
+	myOscilloscope.lineThickness = 3;
+
+	app.model.instr.gain.connect(myOscilloscope);
+	myOscilloscope.connect(context.destination);
+
+	</script>
 </body>
 </html>
