@@ -1,0 +1,23 @@
+{
+  "name": "SoundSynth",
+  "author": "Mr.Kevington",
+  "version": "0.1.0",
+  "description": "A simple sound synthesizer using WebAudio and TypeScript",
+  "keywords": [
+    "WebAudio",
+    "TypeScript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrkev/SoundSynth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mrkev/SoundSynth/issues"
+  },
+  "homepage": "https://github.com/mrkev/SoundSynth",
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-concat": "^2.2.0",
+    "gulp-typescript-compiler": "^1.0.0"
+  }
+}

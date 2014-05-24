@@ -1,5 +1,7 @@
-scripts/unused
-
 .DS_Store
 .codekit-cache
 
+node_modules
+.codekit-cache
+.project
+unused

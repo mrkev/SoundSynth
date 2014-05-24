@@ -1,5 +1,12 @@
 ///<reference path="utils.ts"/>
 
+/*
+
+	UNUSED. Attempts to be a beat machine that
+	dispatches callbacs at a constant frequency.
+
+ */
+
 class Beat {
 	// div = 1/16th, beat = 1/4er, bar = 1, word = 4, verse = 16, song = 64
 	public callbacks : Function[] = [null, null, null, null, null, null];
